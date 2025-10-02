@@ -7,11 +7,13 @@ import (
 
 func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Welcome to Auth"))
+		_, err := w.Write([]byte("Welcome to Auth"))
+		if err != nil {
+			log.Printf("Error writing response: %s\n", err.Error())
+		}
 	})
 
-	log.Println("listening on :8080")
-	if err := http.ListenAndServe(":8080", nil); err != nil {
-		log.Fatal(err)
-	}
+	port := "8080"
+	log.Println("listening on " + port)
+	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
