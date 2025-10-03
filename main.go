@@ -2,18 +2,16 @@ package main
 
 import (
 	"log"
-	"net/http"
+
+	"github.com/gofiber/fiber/v2"
 )
 
 func main() {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		_, err := w.Write([]byte("Welcome to Auth"))
-		if err != nil {
-			log.Printf("Error writing response: %s\n", err.Error())
-		}
+	app := fiber.New()
+
+	app.Get("/", func(c *fiber.Ctx) error {
+		return c.Status(fiber.StatusOK).SendString("Welcome to Auth")
 	})
 
-	port := "8080"
-	log.Println("listening on " + port)
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	log.Fatal(app.Listen(":8080"))
 }
